@@ -36,6 +36,7 @@
       'bandwidth.csv'
     ),
 
+    // Interface name.
     networkInterface = null,
 
     // Captured output from netstat.
