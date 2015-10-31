@@ -42,10 +42,6 @@
     // Captured output from netstat.
     output = '',
 
-    // Placeholders for child processes.
-    netstatProcess = null,
-    grepProcess = null,
-
     /**
      * Gets date string in the format of YYYY-MM-DD.
      *
@@ -127,6 +123,9 @@
      * Starts retrieving statistics from netstat.
      */
     start = function () {
+      var  netstatProcess = null,
+        grepProcess = null;
+
       // Use netstat to collect statistics of network interface.
       // -I: Specifies the network interface.
       // -b: Show the statistics in terms of number of bytes.
