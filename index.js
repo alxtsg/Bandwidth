@@ -18,8 +18,11 @@
     // Pattern of netstat output to be captured (number of in/ out bytes).
     OUTPUT_PATTERN = /(\d+)\s+(\d+)$/,
 
-    // Network interface to be monitored.
-    NETWORK_INTERFACE = 'bge0',
+    // Configuration filename.
+    CONFIG_FILENAME = path.join(
+      __dirname,
+      'config.json'
+    ),
 
     // Error log filename.
     ERROR_FILENAME = path.join(
@@ -32,6 +35,8 @@
       __dirname,
       'bandwidth.csv'
     ),
+
+    networkInterface = null,
 
     // Captured output from netstat.
     output = '',
@@ -115,49 +120,75 @@
           }
         }
       );
+    },
+
+    /**
+     * Starts retrieving statistics from netstat.
+     */
+    start = function () {
+      // Use netstat to collect statistics of network interface.
+      // -I: Specifies the network interface.
+      // -b: Show the statistics in terms of number of bytes.
+      netstatProcess = spawn(
+        'netstat',
+        [
+          '-I',
+          networkInterface,
+          '-b'
+        ]
+      );
+
+      // Use grep to filter headers from netstat output.
+      grepProcess = spawn(
+        'grep',
+        [
+          networkInterface
+        ]
+      );
+
+      netstatProcess.stdout.on('data', function (data) {
+        grepProcess.stdin.write(data);
+      });
+
+      netstatProcess.on('close', function (code, signal) {
+        if (code === null) {
+          logError(util.format('netstat killed with signal %s.', signal));
+        }
+        grepProcess.stdin.end();
+      });
+
+      grepProcess.stdout.on('data', function (data) {
+        var dataBuffer = new Buffer(data, 'utf8');
+        output += dataBuffer.toString();
+      });
+
+      grepProcess.on('close', function (code, signal) {
+        if (code === null) {
+          logError(util.format('grep killed with signal %s.', signal));
+        } else {
+          process.nextTick(parseStatistics);
+        }
+      });
     };
 
-  // Use netstat to collect statistics of network interface.
-  // -I: Specifies the network interface.
-  // -b: Show the statistics in terms of number of bytes.
-  netstatProcess = spawn(
-    'netstat',
-    [
-      '-I',
-      NETWORK_INTERFACE,
-      '-b'
-    ]
-  );
-
-  // Use grep to filter headers from netstat output.
-  grepProcess = spawn(
-    'grep',
-    [
-      NETWORK_INTERFACE
-    ]
-  );
-
-  netstatProcess.stdout.on('data', function (data) {
-    grepProcess.stdin.write(data);
-  });
-
-  netstatProcess.on('close', function (code, signal) {
-    if (code === null) {
-      logError(util.format('netstat killed with signal %s.', signal));
+  fs.readFile(
+    CONFIG_FILENAME,
+    {
+      encoding: 'utf8'
+    },
+    function (readFileError, data) {
+      var config = null;
+      if (readFileError !== null) {
+        logError('Unable to read configuration file: ' + readFileError);
+        return;
+      }
+      try {
+        config = JSON.parse(data);
+        networkInterface = config.interface;
+        process.nextTick(start);
+      } catch (parseError) {
+        logError('Unable to parse configuration file: ' + parseError);
+      }
     }
-    grepProcess.stdin.end();
-  });
-
-  grepProcess.stdout.on('data', function (data) {
-    var dataBuffer = new Buffer(data, 'utf8');
-    output += dataBuffer.toString();
-  });
-
-  grepProcess.on('close', function (code, signal) {
-    if (code === null) {
-      logError(util.format('grep killed with signal %s.', signal));
-    } else {
-      process.nextTick(parseStatistics);
-    }
-  });
+  );
 }());
