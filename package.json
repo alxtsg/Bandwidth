@@ -1,6 +1,6 @@
 {
   "name": "bandwidth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Small utility for collecting bandwidth usage.",
   "main": "index.js",
   "scripts": {

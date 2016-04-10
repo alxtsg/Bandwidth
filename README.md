@@ -4,17 +4,15 @@
 
 Small utility for collecting bandwidth usage.
 
-Note: This application is tested on OpenBSD 5.8 only and is not guaranteed to work on other platforms.
+Note: This application is tested on OpenBSD 5.9 only and is not guaranteed to work on other platforms.
 
 ## Requirements ##
 
-* Node.js (`>=0.10.35`).
+* Node.js (`>=4.3.0`).
 
 ## Installation ##
 
-1. Install Node.js.
-2. Install the application by `npm install`.
-3. Start the application by `node index.js`.
+0. `node index.js`
 
 ## Usage ##
 
