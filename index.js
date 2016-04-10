@@ -9,7 +9,7 @@
 
   'use strict';
 
-  var Buffer = require('buffer').Buffer,
+  const Buffer = require('buffer').Buffer,
     fs = require('fs'),
     path = require('path'),
     spawn = require('child_process').spawn,
@@ -34,10 +34,10 @@
     OUTPUT_FILENAME = path.join(
       __dirname,
       'bandwidth.csv'
-    ),
+    );
 
-    // Interface name.
-    networkInterface = null,
+  // Interface name.
+  let networkInterface = null,
 
     // Captured output from netstat.
     output = '',
@@ -45,10 +45,10 @@
     /**
      * Gets date string in the format of YYYY-MM-DD.
      *
-     * @return {String} Date string.
+     * @returns {string} Date string.
      */
     getDateString = function () {
-      var date = new Date(),
+      let date = new Date(),
         dateString = date.toISOString();
       dateString = dateString.split('T')[0];
       return dateString;
@@ -57,7 +57,7 @@
     /**
      * Logs error message.
      *
-     * @param {String} message Error message.
+     * @param {string} message Error message.
      */
     logError = function (message) {
       fs.appendFile(
@@ -78,19 +78,14 @@
      * Parses statistics reported by netstat.
      */
     parseStatistics = function () {
-      var lines = output.split('\n'),
-        line = null,
-        results = null,
-        inBytes = null,
-        outBytes = null,
-        totalBytes = null;
+      let lines = output.split('\n');
       if (lines.length === 0) {
         logError('No statistics can be retrieved from netstat.');
         return;
       }
       // Only the first line is needed.
-      line = lines[0];
-      results = OUTPUT_PATTERN.exec(line);
+      let line = lines[0],
+        results = OUTPUT_PATTERN.exec(line);
       if ((results === null) || (results.length !== 3)) {
         logError('netstat output does not match expected pattern.');
         return;
@@ -98,9 +93,9 @@
       // Log statistics to CSV file.
       // The second matching result is the number of incoming number of bytes.
       // The third matching result is the number of outgoing number of bytes.
-      inBytes = parseInt(results[1], 10);
-      outBytes = parseInt(results[2], 10);
-      totalBytes = inBytes + outBytes;
+      let inBytes = parseInt(results[1], 10),
+        outBytes = parseInt(results[2], 10),
+        totalBytes = inBytes + outBytes;
       fs.appendFile(
         OUTPUT_FILENAME,
         util.format(
@@ -123,7 +118,7 @@
      * Starts retrieving statistics from netstat.
      */
     start = function () {
-      var  netstatProcess = null,
+      let  netstatProcess = null,
         grepProcess = null;
 
       // Use netstat to collect statistics of network interface.
@@ -158,7 +153,7 @@
       });
 
       grepProcess.stdout.on('data', function (data) {
-        var dataBuffer = new Buffer(data, 'utf8');
+        let dataBuffer = new Buffer(data, 'utf8');
         output += dataBuffer.toString();
       });
 
@@ -177,7 +172,7 @@
       encoding: 'utf8'
     },
     function (readFileError, data) {
-      var config = null;
+      let config = null;
       if (readFileError !== null) {
         logError('Unable to read configuration file: ' + readFileError);
         return;
