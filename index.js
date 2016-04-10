@@ -18,20 +18,20 @@
     // Pattern of netstat output to be captured (number of in/ out bytes).
     OUTPUT_PATTERN = /(\d+)\s+(\d+)$/,
 
-    // Configuration filename.
-    CONFIG_FILENAME = path.join(
+    // Path to configuration file.
+    CONFIG_FILE_PATH = path.join(
       __dirname,
       'config.json'
     ),
 
-    // Error log filename.
-    ERROR_FILENAME = path.join(
+    // Path to error log.
+    ERROR_FILE_PATH = path.join(
       __dirname,
       'error.log'
     ),
 
-    // Output CSV filename.
-    OUTPUT_FILENAME = path.join(
+    // Path to output CSV file.
+    OUTPUT_FILE_PATH = path.join(
       __dirname,
       'bandwidth.csv'
     );
@@ -61,7 +61,7 @@
      */
     logError = function (message) {
       fs.appendFile(
-        ERROR_FILENAME,
+        ERROR_FILE_PATH,
         util.format(
           '%s\n',
           message
@@ -97,7 +97,7 @@
         outBytes = parseInt(results[2], 10),
         totalBytes = inBytes + outBytes;
       fs.appendFile(
-        OUTPUT_FILENAME,
+        OUTPUT_FILE_PATH,
         util.format(
           '%s,%d,%d,%d\n',
           getDateString(),
@@ -167,7 +167,7 @@
     };
 
   fs.readFile(
-    CONFIG_FILENAME,
+    CONFIG_FILE_PATH,
     {
       encoding: 'utf8'
     },
