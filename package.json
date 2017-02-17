@@ -3,6 +3,11 @@
   "version": "1.0.1",
   "description": "Small utility for collecting bandwidth usage.",
   "main": "index.js",
+  "devDependencies": {
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
