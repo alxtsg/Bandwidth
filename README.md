@@ -12,32 +12,27 @@ This application is developed and tested on OpenBSD 6.5.
 
 ## Installation ##
 
-0. `node index.js`
+0. `npm install --production`
+
+## Configuration ##
+
+Make a copy of `.env.template` and name the new file as `.env`. The `.env` file
+controls the following:
+
+* `INTERFACE`: The network interface name.
+* `LOG_FILE`: The path of log file. If the path is a relative path, it is
+              relative to the installation directory.
 
 ## Usage ##
 
-Run the application, a CSV file `bandwidth.csv` is produced.
-
-In case of errors, error logs will be written to `error.log`.
-
-The configuration file `config.json` controls the following:
-
-* interface: The name of network interface which you want to collect bandwidth
-             usage data from. For example `em0`.
-
-## Examples ##
-
-Assuming you want to collect bandwidth usage from the network interface `em0`,
-prepare `config.json` with the following:
+Run the application:
 
 ```
-{
-  "interface": "em0"
-}
+node index.js
 ```
 
-Then run the application by `node index.js`. A CSV file containing 4 columns
-will be generated:
+A CSV file is produced at the location as specified in `LOG_FILE`. The CSV file
+contains the following columns:
 
 1. The date of bandwidth usage collection, in the format `YYYY-MM-DD`.
 2. The number of incoming bytes.
@@ -50,13 +45,7 @@ For example:
 2015-10-31,18974025324,34145831737,53119857061
 ```
 
-## Known issues ##
-
-* (None)
-
-## TODO ##
-
-* (None)
+In case of errors, the error message is written to `stderr`.
 
 ## License ##
 

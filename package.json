@@ -13,5 +13,8 @@
   ],
   "author": "alextsang@live.com",
   "license": "BSD-3-Clause",
-  "homepage": "https://bitbucket.org/alxtsg/bandwidth#readme"
+  "homepage": "https://bitbucket.org/alxtsg/bandwidth#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0"
+  }
 }
