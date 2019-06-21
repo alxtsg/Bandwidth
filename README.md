@@ -2,13 +2,13 @@
 
 ## Description ##
 
-Small utility for collecting bandwidth usage.
+Small utility for collecting bandwidth usage on OpenBSD.
 
-Note: This application is developed and tested on OpenBSD 6.0. It is not guaranteed that this application works on other platforms.
+This application is developed and tested on OpenBSD 6.5.
 
 ## Requirements ##
 
-* Node.js (`>=4.4.5`).
+* Node.js (`>=8.12.0`).
 
 ## Installation ##
 
@@ -22,11 +22,13 @@ In case of errors, error logs will be written to `error.log`.
 
 The configuration file `config.json` controls the following:
 
-* interface: The name of network interface which you want to collect bandwidth usage data from. For example `em0`.
+* interface: The name of network interface which you want to collect bandwidth
+             usage data from. For example `em0`.
 
 ## Examples ##
 
-Assuming you want to collect bandwidth usage from the network interface `em0`. prepare `config.json` with the following:
+Assuming you want to collect bandwidth usage from the network interface `em0`,
+prepare `config.json` with the following:
 
 ```
 {
@@ -34,7 +36,8 @@ Assuming you want to collect bandwidth usage from the network interface `em0`. p
 }
 ```
 
-Then run the application by `node index.js`. A CSV file containing 4 columns will be generated:
+Then run the application by `node index.js`. A CSV file containing 4 columns
+will be generated:
 
 1. The date of bandwidth usage collection, in the format `YYYY-MM-DD`.
 2. The number of incoming bytes.
