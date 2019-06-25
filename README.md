@@ -25,7 +25,7 @@ controls the following:
 
 ## Usage ##
 
-Navigate to the installation directory and run `index.js` using Node.js:
+Run `index.js` using Node.js:
 
 ```
 node index.js

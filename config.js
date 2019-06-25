@@ -10,12 +10,22 @@ const dotenv = require('dotenv');
 
 const path = require('path');
 
+/**
+ * Path of .env file.
+ */
+const envFile = path.join(
+  __dirname,
+  '.env'
+);
+
 const config = {
   interface: null,
   logFile: null
 };
 
-const result = dotenv.config();
+const result = dotenv.config({
+  path: envFile
+});
 if (result.error !== undefined) {
   throw new Error(`Unable to read .env: ${result.error.message}`);
 }
